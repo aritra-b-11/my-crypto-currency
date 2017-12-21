@@ -22,8 +22,13 @@ class block:
     def return_prev_hash(self):
         return str(self.previousHash)
 
+    def return_data(self):
+        return str(self.data)
 
-class blockchain:
+    def return_index(self):
+        return str(self.index)
+
+class blockchain(block):
 
     def __init__(self):
         self.chain=[self.create_genesis_block()]
@@ -40,23 +45,19 @@ class blockchain:
         new_block.hash = new_block.calculate_Hash()
         self.chain.append(new_block)
 
+    def print_chain(self):
+        for i in range(len(self.chain)):
+            print "Block Num:",self.chain[i].return_index(), "data:",self.chain[i].return_data()
+            print "Previous Hash:",self.chain[i].return_prev_hash()
+            print "Current Hash",self.chain[i].calculate_Hash()
+
 
 
 my_coin = blockchain()
 
-my_block =  my_coin.get_latest_block()
-print "prev",my_block.return_prev_hash()
-print "current",my_block.calculate_Hash()
-
 my_coin.add_block(block("1", "20/12/2017", 20, "0"))
-my_block =  my_coin.get_latest_block()
-print "prev",my_block.return_prev_hash()
-print "current",my_block.calculate_Hash()
-
 my_coin.add_block(block("2", "21/12/2017", 70, "0"))
-my_block =  my_coin.get_latest_block()
-print "prev",my_block.return_prev_hash()
-print "current",my_block.calculate_Hash()
+my_coin.add_block(block("3", "21/12/2017", 10, "0"))
 
-
+my_coin.print_chain()
 
