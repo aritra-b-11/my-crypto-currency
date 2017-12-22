@@ -11,6 +11,7 @@ class block:
         self.nonce = 0
         self.hash = self.calculate_Hash()
 
+
     def calculate_Hash(self):
         sha = hashlib.sha1()
         sha.update(
@@ -22,19 +23,18 @@ class block:
         )
         return sha.hexdigest()
 
-
     def mine_block(self,difficulty):
         while(self.hash[:difficulty] != "0"*difficulty):
-            self.hash  = self.calculate_Hash()
+            self.hash = self.calculate_Hash()
             self.nonce += 1
         print "Mined Block: ", self.hash
-        #return self.hash
+        return self.hash
 
 class blockchain(block):
 
     def __init__(self):
         self.chain=[self.create_genesis_block()]
-        self.difficulty = 1
+        self.difficulty = 3
 
     def create_genesis_block(self):
         return block(0, date.datetime.now(), "Genesis Block", "0")
@@ -51,14 +51,18 @@ class blockchain(block):
         self.chain.append(new_block)
 
     def print_chain(self):
-        for i in range(len(self.chain)):
+        print "Starting Blockchain:"
+        print "Block Num:",self.chain[0].index,"data:",self.chain[0].data
+        print "previous Hash:",self.chain[0].previousHash
+        print "current Hash",self.chain[0].calculate_Hash()
+        for i in range(1,len(self.chain)):
             print "Block Num:",self.chain[i].index, "data:",self.chain[i].data
             print "Previous Hash:",self.chain[i].previousHash
-            print "Current Hash",self.chain[i].calculate_Hash()
+            print "Current Hash",self.chain[i].mine_block(self.difficulty)
 
     def is_chain_valid(self):
         for i in range(1,len(self.chain)):
-            if self.chain[i].hash != self.chain[i].calculate_Hash():
+            if self.chain[i].hash != self.chain[i].mine_block(self.difficulty):
                 return False
             elif self.chain[i-1].hash != self.chain[i].previousHash:
                 return False
@@ -75,12 +79,13 @@ print "Mining block 3..."
 my_coin.add_block(block("3", "21/12/2017", 10, "0"))
 print "----------------------"
 my_coin.print_chain()
+print "----------------------"
 print my_coin.is_chain_valid()
 print "----------------------"
 
-# my_coin.chain[2].data=100
-# my_coin.print_chain()
-# print my_coin.is_chain_valid()
+my_coin.chain[2].data=100
+my_coin.print_chain()
+print my_coin.is_chain_valid()
 
-# print "----------------------"
+print "----------------------"
 
