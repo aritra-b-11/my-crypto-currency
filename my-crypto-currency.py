@@ -30,6 +30,14 @@ class block:
         print "Mined Block: ", self.hash
         return self.hash
 
+    def check_if_mined(self,difficulty):
+        new_hash= ""
+        self.nonce=0
+        while(new_hash[:difficulty] != "0"*difficulty):
+            new_hash = self.calculate_Hash()
+            self.nonce +=1
+        return new_hash
+
 class blockchain(block):
 
     def __init__(self):
@@ -62,9 +70,11 @@ class blockchain(block):
 
     def is_chain_valid(self):
         for i in range(1,len(self.chain)):
-            if self.chain[i].hash != self.chain[i].mine_block(self.difficulty):
+            if self.chain[i].hash != self.chain[i].check_if_mined(self.difficulty):
+                print "current hash", self.chain[i].hash," does not match with the mined hash",self.chain[i].check_if_mined(self.difficulty)
                 return False
             elif self.chain[i-1].hash != self.chain[i].previousHash:
+                print "previous hash",self.chain[i-1].hash," does not match",self.chain[i].previousHash
                 return False
         return True
 
@@ -86,6 +96,5 @@ print "----------------------"
 my_coin.chain[2].data=100
 my_coin.print_chain()
 print my_coin.is_chain_valid()
-
 print "----------------------"
 
