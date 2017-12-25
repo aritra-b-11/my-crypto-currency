@@ -1,2 +1,61 @@
-This is an attempt to learn more about block chain and crypto currency.
+Hello
 
+This is an attempt to learn about the blockchain. blockchain is the
+underlying technology that Bitcoin and other crypto currency uses.
+
+Block chain is a chain of block. Each block has a hash associated with
+it. The hashes verifies the block. Now, each hash is created with
+current block data and previous hash. This makes the block chain
+tamper proof.
+
+Hash is a set of output string. Its length is same but will varry if
+the input is changed. Lets see: Notice that when a single char is
+changed in the strin, it changes the output very drastically.
+
+Now back to our code. It is written in python.
+
+Nonce will be needed for mining. I will show it later.
+
+SHA1 = secure hashing algorithm 1 Bit
+Bitcoin uses SHA256 for mining
+
+For passing the inputs in the hash function, I am taking the index, timestamp of the data , data, pre hash and nonce. This makes each hash uniq
+
+I will come back to mining part later.
+
+Now lets make the blockchain.
+
+The block chain is just the chain/ array of blocks that we defined earlier.
+
+In case of the block chain, the first block needs to be treated as a Genesis Block. This needs to be done as it does not have a previous block, so no prev hash is present.
+
+get latest block is just returns last block of the array.
+
+add block will add the block in the chain. Notice, this step, we are making prev hash to last block's hash. Next to add this block, we are mining it.
+
+
+Now mining will be needed as we do not want someone makes the chain huge just because it is simple. We need to make it tough for addition of blocks in the chain so that chain has some meaning to it.
+
+For Bitcoin mining also helps to create new bitcoin.
+
+Next we have defined print chain for printing the entire chain. Then we have a function for checking the chain, if it is a valid chain or not.
+
+Lets visit the mining part once before we start testing the chain.
+
+
+For mining, we set a difficulty to check: how many number of zero are present before a hash.
+But for a sepsific input in hash function, we will get a sepecific output. This will result in an ininfinite loop. Thus nonce is needed. Nonce has nothing to do with the block chain. We chainge its value to get a diff hash output each time.
+
+Once we get the block output, we can say the block is mined and its added to the chain.
+
+for checking, if the chain is valid, we are using the check if mined method. Since, mine_block method will always add the hash, it will undesirable for just checking purpose.
+
+Next we have the testing of the chain. First we are calling the instance blockchain.
+Then I am adding blocks to it. Next we check if the chain is valid.
+
+After that, I am tampering with the chain. Then I am tring to see if the chain is still valid or not.
+
+See all the things that we discussed are explained here. since we set difficulty = 3, we have 3 leading 0 for each hash that are created. Prev hash is used for current hash generation. 
+In the last example, we tried to alter the data. But Since the hash that is generated differs from the hash that is mined, it is a false chain.
+
+I hope You enjoyed this video. Now try your own blockchain.
