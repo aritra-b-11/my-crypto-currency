@@ -1,5 +1,25 @@
+"""
+Starting the blockchain code.
+
+We need :
+1. hash lib for the hashing algorithm.
+2. date time for capturing the current date.
+"""
+
+
 import hashlib
 import datetime as date
+
+"""
+We will start with the defination of the block:
+a Block sould take input as :
+1. index
+2. timestamp
+3. data
+4. previous hash
+
+from this we will calculate the hash of this block. For calculating
+the hash we will need nonce=number used only once"""
 
 class block:
 
@@ -12,6 +32,8 @@ class block:
         self.hash = self.calculate_Hash()
 
 
+        # lets define the calculate hash function. I am using sha1
+
     def calculate_Hash(self):
         sha = hashlib.sha1()
         sha.update(
@@ -22,6 +44,8 @@ class block:
             str(self.nonce)
         )
         return sha.hexdigest()
+
+
 
     def mine_block(self,difficulty):
         while(self.hash[:difficulty] != "0"*difficulty):
@@ -38,23 +62,31 @@ class block:
             self.nonce +=1
         return new_hash
 
+
+""" The class blockchain is defined from here.
+
+Now class blockchain is a subclass of block. So we can inherit the
+class block property to it."""
+
 class blockchain(block):
 
     def __init__(self):
+        # this is the chain def
         self.chain=[self.create_genesis_block()]
+        # difficulty will be needed for mining.
         self.difficulty = 3
+
+
+    #first block needs to be the Genesis Block
 
     def create_genesis_block(self):
         return block(0, date.datetime.now(), "Genesis Block", "0")
-
 
     def get_latest_block(self):
         return self.chain[len(self.chain)-1]
 
     def add_block(self, new_block):
         new_block.previousHash = self.get_latest_block().hash
-        #new_block.hash = new_block.calculate_Hash()
-        #new_block.hash = new_block.mine_block(self.difficulty)
         new_block.mine_block(self.difficulty)
         self.chain.append(new_block)
 
@@ -71,13 +103,16 @@ class blockchain(block):
     def is_chain_valid(self):
         for i in range(1,len(self.chain)):
             if self.chain[i].hash != self.chain[i].check_if_mined(self.difficulty):
-                print "current hash", self.chain[i].hash," does not match with the mined hash",self.chain[i].check_if_mined(self.difficulty)
+                print "current hash", self.chain[i].hash," do not match with mined hash",self.chain[i].check_if_mined(self.difficulty)
                 return False
             elif self.chain[i-1].hash != self.chain[i].previousHash:
-                print "previous hash",self.chain[i-1].hash," does not match",self.chain[i].previousHash
+                print "previous hash",self.chain[i-1].hash," does not match with attribute prev Hash",self.chain[i].previousHash
                 return False
         return True
 
+
+
+# thats all about blockchain def. Next part is for testing the chain.
 
 my_coin = blockchain()
 
