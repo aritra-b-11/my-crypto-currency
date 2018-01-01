@@ -1,11 +1,10 @@
+#!/usr/bin/env python
 """
 Starting the blockchain code.
-
 We need :
 1. hash lib for the hashing algorithm.
 2. date time for capturing the current date.
 """
-
 
 import hashlib
 import datetime as date
@@ -17,9 +16,9 @@ a Block sould take input as :
 2. timestamp
 3. data
 4. previous hash
-
 from this we will calculate the hash of this block. For calculating
-the hash we will need nonce=number used only once"""
+the hash we will need nonce=number used only once
+"""
 
 class block:
 
@@ -30,7 +29,6 @@ class block:
         self.previousHash=previousHash
         self.nonce = 0
         self.hash = self.calculate_Hash()
-
 
         # lets define the calculate hash function. I am using sha1
 
@@ -44,8 +42,6 @@ class block:
             str(self.nonce)
         )
         return sha.hexdigest()
-
-
 
     def mine_block(self,difficulty):
         while(self.hash[:difficulty] != "0"*difficulty):
@@ -62,11 +58,10 @@ class block:
             self.nonce +=1
         return new_hash
 
-
 """ The class blockchain is defined from here.
-
 Now class blockchain is a subclass of block. So we can inherit the
-class block property to it."""
+class block property to it.
+"""
 
 class blockchain(block):
 
@@ -75,7 +70,6 @@ class blockchain(block):
         self.chain=[self.create_genesis_block()]
         # difficulty will be needed for mining.
         self.difficulty = 3
-
 
     #first block needs to be the Genesis Block
 
@@ -110,8 +104,6 @@ class blockchain(block):
                 return False
         return True
 
-
-
 # thats all about blockchain def. Next part is for testing the chain.
 
 my_coin = blockchain()
@@ -127,9 +119,10 @@ my_coin.print_chain()
 print "----------------------"
 print my_coin.is_chain_valid()
 print "----------------------"
-
 my_coin.chain[2].data=100
 my_coin.print_chain()
 print my_coin.is_chain_valid()
 print "----------------------"
+
+# code ends here
 
